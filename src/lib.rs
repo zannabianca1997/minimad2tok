@@ -9,7 +9,7 @@ pub use minimad;
 An adapter to implement `ToTokens` on types defined in the library `minimad`.
 The emitted tokens will represent a `'static` version of the text
 */
-pub struct Emitter<'s, T>(&'s T);
+pub struct Emitter<'s, T>(pub &'s T);
 
 impl ToTokens for Emitter<'_, Text<'_>> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
