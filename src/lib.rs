@@ -2,9 +2,6 @@ use minimad::{Alignment, Composite, CompositeStyle, Compound, Line, TableRow, Ta
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 
-// reexports for common macro usage
-pub use minimad;
-
 /**
 An adapter to implement `ToTokens` on types defined in the library `minimad`.
 The emitted tokens will represent a `'static` version of the text
@@ -16,7 +13,7 @@ impl ToTokens for Emitter<'_, Text<'_>> {
         let Self(Text { lines }) = self;
         let lines = lines.iter().map(Emitter);
         quote! {
-            ::minimad2tok::minimad::Text {
+            ::minimad::Text {
                 lines: ::std::vec![
                     #(#lines),*
                 ]
@@ -32,22 +29,22 @@ impl ToTokens for Emitter<'_, Line<'_>> {
         match line {
             Line::Normal(content) => {
                 let content = Emitter(content);
-                quote! { ::minimad2tok::minimad::Line::Normal(#content) }
+                quote! { ::minimad::Line::Normal(#content) }
             }
             Line::TableRow(content) => {
                 let content = Emitter(content);
-                quote! { ::minimad2tok::minimad::Line::TableRow(#content) }
+                quote! { ::minimad::Line::TableRow(#content) }
             }
             Line::TableRule(content) => {
                 let content = Emitter(content);
-                quote! { ::minimad2tok::minimad::Line::TableRule(#content) }
+                quote! { ::minimad::Line::TableRule(#content) }
             }
             Line::HorizontalRule => {
-                quote! { ::minimad2tok::minimad::Line::HorizontalRule }
+                quote! { ::minimad::Line::HorizontalRule }
             }
             Line::CodeFence(content) => {
                 let content = Emitter(content);
-                quote! { ::minimad2tok::minimad::Line::CodeFence(#content) }
+                quote! { ::minimad::Line::CodeFence(#content) }
             }
         }
         .to_tokens(tokens)
@@ -60,7 +57,7 @@ impl ToTokens for Emitter<'_, Composite<'_>> {
         let style = Emitter(style);
         let compounds = compounds.iter().map(Emitter);
         quote! {
-            ::minimad2tok::minimad::Composite {
+            ::minimad::Composite {
                 style: #style,
                 compounds: ::std::vec![
                     #(#compounds),*
@@ -76,19 +73,19 @@ impl ToTokens for Emitter<'_, CompositeStyle> {
         let Self(style) = self;
         match style {
             CompositeStyle::Paragraph => {
-                quote! { ::minimad2tok::minimad::CompositeStyle::Paragraph }
+                quote! { ::minimad::CompositeStyle::Paragraph }
             }
             CompositeStyle::Header(n) => {
-                quote! { ::minimad2tok::minimad::CompositeStyle::Header(#n) }
+                quote! { ::minimad::CompositeStyle::Header(#n) }
             }
             CompositeStyle::ListItem(n) => {
-                quote! { ::minimad2tok::minimad::CompositeStyle::ListItem(#n) }
+                quote! { ::minimad::CompositeStyle::ListItem(#n) }
             }
             CompositeStyle::Code => {
-                quote! { ::minimad2tok::minimad::CompositeStyle::Code }
+                quote! { ::minimad::CompositeStyle::Code }
             }
             CompositeStyle::Quote => {
-                quote! { ::minimad2tok::minimad::CompositeStyle::Quote }
+                quote! { ::minimad::CompositeStyle::Quote }
             }
         }
         .to_tokens(tokens)
@@ -105,7 +102,7 @@ impl ToTokens for Emitter<'_, Compound<'_>> {
             strikeout,
         }) = self;
         quote! {
-            ::minimad2tok::minimad::Compound {
+            ::minimad::Compound {
                 src: #src,
                 bold: #bold,
                 italic: #italic,
@@ -122,7 +119,7 @@ impl ToTokens for Emitter<'_, TableRow<'_>> {
         let Self(TableRow { cells }) = self;
         let cells = cells.iter().map(Emitter);
         quote! {
-            ::minimad2tok::minimad::TableRow {
+            ::minimad::TableRow {
                 cells: ::std::vec![
                     #(#cells),*
                 ]
@@ -137,7 +134,7 @@ impl ToTokens for Emitter<'_, TableRule> {
         let Self(TableRule { cells }) = self;
         let cells = cells.iter().map(Emitter);
         quote! {
-            ::minimad2tok::minimad::TableRule {
+            ::minimad::TableRule {
                 cells: ::std::vec![
                     #(#cells),*
                 ]
@@ -152,16 +149,16 @@ impl ToTokens for Emitter<'_, Alignment> {
         let Self(alignement) = self;
         match alignement {
             Alignment::Unspecified => quote! {
-                ::minimad2tok::minimad::Alignment::Unspecified
+                ::minimad::Alignment::Unspecified
             },
             Alignment::Left => quote! {
-                ::minimad2tok::minimad::Alignment::Left
+                ::minimad::Alignment::Left
             },
             Alignment::Center => quote! {
-                ::minimad2tok::minimad::Alignment::Center
+                ::minimad::Alignment::Center
             },
             Alignment::Right => quote! {
-                ::minimad2tok::minimad::Alignment::Right
+                ::minimad::Alignment::Right
             },
         }
         .to_tokens(tokens)
