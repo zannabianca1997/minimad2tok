@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-minimad = "0.13.1"
-proc-macro2 = "1.0.84"
-quote = "1.0.36"
+minimad = "0.13"
+proc-macro2 = "1.0"
+quote = "1.0"
